@@ -1,0 +1,20 @@
+apiVersion: skaffold/v2beta7
+kind: Config
+metadata:
+  name: microservices
+build:
+  artifacts:
+  - image: prongbang/shop-app
+    context: shop-app
+  - image: prongbang/shop-web
+    context: shop-web
+deploy:
+  kubectl:
+    manifests:
+    - shop-app/k8s/deployment.yaml
+    - shop-web/k8s/deployment.yaml
+portForward:
+  - resourceType: deployment
+    resourceName: shop-web
+    port: 8080
+    localPort: 9000

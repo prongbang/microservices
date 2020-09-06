@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: shop-app
+  labels:
+    app: shop-app
+spec:
+  clusterIP: None
+  ports:
+    - port: 50051
+      name: shop-app
+  selector:
+    app: shop-app
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shop-app
+  labels:
+    app: shop-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: shop-app
+  template:
+    metadata:
+      labels:
+        app: shop-app
+    spec:
+      containers:
+      - name: shop-app
+        image: prongbang/shop-app
+        ports:
+        - containerPort: 50051
